@@ -2,7 +2,10 @@
 
 ## 1.0.n - Test version
 
-## React {name} from 'hsmotion';
+---
+
+- scrollActive(tagName)
+  - 현재 스크롤 위치를 체크하여 tagName 위치와 비교, 화면 중간 지점을 기준으로, active 클래스를 갖도록 처리.
 
 ---
 
@@ -22,5 +25,17 @@
 
 ---
 
+- minHeightFull(tagName)
+  - 매개변수로 tagName 값을 받습니다. 해당 tag 의 min-height 값을 화면 높이로 지정합니다.
+  - 모바일 기기일 경우 height 100vh 적용이슈에 대한 대응 함수입니다.
+
+---
+
 - consoleTest(text)
   - console.log 테스트용 함수 입니다.
+
+---
+
+- SKP function
+  - skpNavScroll
+  - skpScrollMove(tagName)

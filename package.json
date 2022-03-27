@@ -1,6 +1,6 @@
 {
   "name": "hsmotion",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "description": "hsmotion test",
   "main": "index.js",
   "scripts": {

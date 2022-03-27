@@ -1,5 +1,3 @@
-// exports.nav = require('./lib/nav').default;
-
 const hsMotion = {};
 
 hsMotion.navScroll = function () {
@@ -39,8 +37,69 @@ hsMotion.scrollMove = function (tagName, gap) {
   }, 1);
 };
 
+hsMotion.minHeightFull = function (tagName) {
+  document.querySelector(tagName).style.minHeight = window.innerHeight + 'px';
+};
+
 hsMotion.consoleTest = function (text) {
   console.log(text);
 };
+
+hsMotion.scrollActive = function (tagName) {
+  const tagItem = document.querySelectorAll(tagName);
+  let itemBoxHeight = 0;
+
+  for(let i = tagItem.length -1; 0 <= i; i--){
+      itemBoxHeight = tagItem[i].offsetHeight;
+      if(0 >= tagItem[i].getBoundingClientRect().top - window.innerHeight/2 && tagItem[i].getBoundingClientRect().top > - itemBoxHeight){  
+          tagItem[i].classList.add('active');
+      } else if(scrollSave < window.scrollY){
+          tagItem[i].classList.remove('active');
+      }
+  }
+  scrollSave = window.scrollY;
+}
+
+hsMotion.skpNavScroll = function () {
+  const scrollChk = window.scrollY || document.documentElement.scrollTop;
+  const setScroll = document.querySelector('#root').classList;
+	const headrNav = document.querySelector('header').querySelector('nav');
+	const sectionBox = document.getElementById('root').querySelectorAll('section');
+	
+	(scrollChk <= document.querySelector('header').offsetHeight - headrNav.offsetHeight) ? setScroll.remove('nav-fixed') : setScroll.add('nav-fixed');
+
+	for(let i = sectionBox.length - 1; i >= 0; i--){
+		if(sectionBox[i].getBoundingClientRect().top + sectionBox[i].offsetHeight - headrNav.querySelector('ul').offsetHeight > 0){
+			for(let j = 0; j < headrNav.querySelectorAll('li').length; j++){
+				headrNav.querySelectorAll('li')[j].classList.remove('active');
+			}
+			headrNav.querySelectorAll('li')[i].classList.add('active');
+		}
+	}
+}
+
+let intervalSkpScroll;
+hsMotion.skpScrollMove = function (tagName) {
+  const gap = 25;
+	const headerNavHeight = document.querySelector('header').querySelector('nav').querySelector('ul').offsetHeight;
+  let positionY = window.pageYOffset + document.querySelector(tagName).getBoundingClientRect().top - headerNavHeight + 1; // 현재 내 스크롤위치
+  let scrollPosition = window.scrollY || document.documentElement.scrollTop;
+  let scrollMoving = scrollPosition;
+  clearInterval(intervalSkpScroll);
+
+  intervalSkpScroll = setInterval(function () {
+    if (Math.floor(positionY / gap) === Math.floor(scrollMoving / gap)) {
+      scrollMoving = positionY;
+      window.scrollTo({ top: positionY });
+      clearInterval(intervalSkpScroll);
+    } else if (positionY < scrollMoving) {
+      window.scrollTo({ top: scrollMoving });
+      scrollMoving -= gap;
+    } else if (positionY > scrollMoving) {
+      window.scrollTo({ top: scrollMoving });
+      scrollMoving += gap;
+    }
+  }, 1);
+}
 
 module.exports = hsMotion;
